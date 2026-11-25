@@ -11,7 +11,6 @@ import { LancamentoRequest, LancamentoResponse } from '../../../models/lancament
   templateUrl: './lancamento-form.html'
 })
 export class LancamentoForm {
-  usuarioId = input.required<number>();
   lancamento = input<LancamentoResponse | null>(null);
   salvou = output<void>();
   cancelou = output<void>();
@@ -93,8 +92,8 @@ export class LancamentoForm {
     this.erro.set('');
  
     const operacao = lancamento
-      ? this.lancamentosService.atualizar(this.usuarioId(), lancamento.id, dados)
-      : this.lancamentosService.cadastrar(this.usuarioId(), dados);
+      ? this.lancamentosService.atualizar(lancamento.id, dados)
+      : this.lancamentosService.cadastrar(dados);
  
     operacao.subscribe({
       next: () => {
