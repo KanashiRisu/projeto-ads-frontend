@@ -28,7 +28,15 @@ export class LancamentoLista implements OnInit {
         this.carregando.set(false);
       },
       error: err => {
-        this.erro.set('Não foi possível carregar os lançamentos.');
+        if (err.status === 401) {
+          this.erro.set('Sessão expirada ou usuário não autenticado. Entre novamente.');
+        } else if (err.status === 403) {
+          this.erro.set('Você não tem permissão para acessar os lançamentos.');
+        } else if (err.status === 0) {
+          this.erro.set('Servidor indisponível. Verifique se a API está ligada.');
+        } else {
+          this.erro.set('Não foi possível carregar os lançamentos.');
+        }
         this.carregando.set(false);
         console.error(err);
       }

@@ -1,15 +1,30 @@
 import { TestBed } from '@angular/core/testing';
-import { AuthInterceptor } from './auth.interceptor';
+import { provideHttpClient, withInterceptors, HttpClient } from '@angular/common/http';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
+import { authInterceptor } from './auth.interceptor';
 
-describe('AuthInterceptor', () => {
-  let service: AuthInterceptor;
+describe('authInterceptor', () => {
+  let http: HttpClient;
+  let requests: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthInterceptor);
+    sessionStorage.clear();
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([]),
+        provideHttpClient(withInterceptors([authInterceptor])),
+        provideHttpClientTesting()
+      ]
+    });
+    http = TestBed.inject(HttpClient);
+    requests = TestBed.inject(HttpTestingController);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  afterEach(() => requests.verify());
+
+  it('deve permitir criar o interceptor', () => {
+    http.get('http://localhost:8080/api/categorias').subscribe();
+    requests.expectOne('http://localhost:8080/api/categorias').flush([]);
   });
 });

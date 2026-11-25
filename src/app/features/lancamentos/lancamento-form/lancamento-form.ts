@@ -109,14 +109,18 @@ export class LancamentoForm {
   }
  
   private formatarErroCategoria(err: any): string {
+    if (err.status === 401) return 'Sessão expirada ou usuário não autenticado. Entre novamente.';
     if (err.status === 0) return 'Servidor indisponível. Verifique se a API está ligada.';
     return 'Falha ao carregar categorias.';
   }
  
   private formatarErroLancamento(err: any): string {
     if (err.status === 400) return 'Dados inválidos. Verifique valor, categoria e campos obrigatórios.';
+    if (err.status === 401) return 'Sessão expirada ou usuário não autenticado. Entre novamente.';
+    if (err.status === 403) return 'Você não tem permissão para salvar este lançamento.';
     if (err.status === 404) return 'Categoria ou lançamento não encontrado.';
+    if (err.status === 409) return err.error?.erro || 'Já existe um conflito com este lançamento.';
     if (err.status === 0) return 'Servidor indisponível. Verifique se a API está ligada.';
-    return err.error?.erro || 'Não foi possível salvar o lançamento.';
+    return err.error?.erro || err.error?.message || 'Não foi possível salvar o lançamento.';
   }
 }

@@ -6,4 +6,6 @@ export interface LoginResponse {
   token: string;
   tipo: string;
   expiraEmSegundos: number;
+  nome?: string;
+  perfil?: string;
 }

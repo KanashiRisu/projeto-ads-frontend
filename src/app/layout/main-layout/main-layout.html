@@ -5,8 +5,11 @@
     <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
     <a class="nav-link" routerLink="/lancamentos" routerLinkActive="active">Lançamentos</a>
     <a class="nav-link" routerLink="/categorias" routerLinkActive="active">Categorias</a>
-    <a class="nav-link" routerLink="/usuarios" routerLinkActive="active">Usuários</a>
+    @if (podeGerenciarUsuarios()) {
+      <a class="nav-link" routerLink="/usuarios" routerLinkActive="active">Usuários</a>
+    }
   </div>
+  <span class="text-white small ms-auto me-3">{{ auth.nome() }}</span>
   <button type="button" class="btn btn-outline-secondary" (click)="sair()">Sair</button>
 </div></nav>
 <main class="container content-area py-4"><router-outlet /></main>

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -9,7 +9,10 @@ import { AuthService } from '../../core/services/auth.service';
   templateUrl: './main-layout.html',
 })
 export class MainLayout {
-  private auth = inject(AuthService);
+  readonly auth = inject(AuthService);
+  readonly podeGerenciarUsuarios = computed(() =>
+    (this.auth.perfil() ?? '').toUpperCase() !== 'OPERADOR'
+  );
   private router = inject(Router);
   sair() {
     this.auth.logout();
